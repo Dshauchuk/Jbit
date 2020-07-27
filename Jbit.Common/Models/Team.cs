@@ -33,7 +33,7 @@ namespace Jbit.Common.Models
 
             if(persons != null)
             {
-                persons = new List<Person>(persons);
+                _persons = new List<Person>(persons);
             }
         }
 
