@@ -14,7 +14,13 @@ namespace Jbit.Common.Models
         public byte[] Avatar { get; }
 
         private List<PersonTask> _tasks;
-        public IReadOnlyCollection<PersonTask> Tasks => _tasks?.ToList();
+        public IReadOnlyCollection<PersonTask> Tasks => _tasks?.ToList().AsReadOnly();
+
+        private List<TeamPerson> _teamLinks;
+
+        public IReadOnlyCollection<TeamPerson> TeamLinks => _teamLinks?.ToList().AsReadOnly();
+
+        public IReadOnlyCollection<Person> Teams => _teamLinks?.Select(l => l.Person).ToList().AsReadOnly();
 
         private Person()
         {
@@ -49,6 +55,36 @@ namespace Jbit.Common.Models
             }
 
             _tasks.Remove(task);
+        }
+
+        public void AddToTeam(Team team)
+        {
+            if(team is null)
+            {
+                throw new ArgumentNullException(nameof(team));
+            }
+
+            if(_teamLinks is null)
+            {
+                _teamLinks = new List<TeamPerson>();
+            }
+
+            _teamLinks.Add(new TeamPerson(team, this));
+        }
+
+        public void RemoveFromTeam(Team team)
+        {
+            if (team is null)
+            {
+                throw new ArgumentNullException(nameof(team));
+            }
+
+            if (_teamLinks is null)
+            {
+                throw new InvalidOperationException("Cannot perform deletion - the person is not assigned to any team");
+            }
+
+            _teamLinks.RemoveAll(tp => tp.TeamId == team.Id);
         }
 
         public double GetPersonRating(ITaskRatingCalculator ratingCalculator = null)

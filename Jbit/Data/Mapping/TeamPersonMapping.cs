@@ -16,7 +16,7 @@ namespace Jbit.Web.Data.Mapping
             builder.Property(e => e.PersonId).IsRequired().HasColumnName("person_id");
 
             builder.HasOne(e => e.Person).WithMany().HasForeignKey(e => e.PersonId);
-            builder.HasOne(e => e.Team).WithMany().HasForeignKey(e => e.TeamId);
+            builder.HasOne(e => e.Team).WithMany(t => t.PersonLinks).HasForeignKey(e => e.TeamId);
         }
     }
 }

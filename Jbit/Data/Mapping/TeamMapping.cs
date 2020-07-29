@@ -15,13 +15,11 @@ namespace Jbit.Web.Data.Mapping
             builder.Property(e => e.Id).IsRequired().HasColumnName("id");
             builder.Property(e => e.Title).IsRequired().HasColumnName("title");
 
-            builder.HasMany(e => e.TeamPersons)
-                .WithOne()
-                .HasForeignKey(t => t.PersonId)
-                .IsRequired()
+            builder.HasMany(e => e.PersonLinks)
+                .WithOne(e => e.Team)
                 .Metadata.PrincipalToDependent.SetPropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Ignore(e => e.Persons);
+            //builder.Ignore(e => e.Persons);
         }
     }
 }

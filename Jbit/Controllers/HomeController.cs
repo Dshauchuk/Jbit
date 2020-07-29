@@ -27,28 +27,8 @@ namespace Jbit.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Privacy()
+        public IActionResult Privacy()
         {
-            try
-            {
-                var team = new Team(Guid.NewGuid(), "Team #1");
-
-                var person1 = await _jbitDbContext.Persons.Include(p => p.Tasks).FirstOrDefaultAsync();
-                team.AddMember(person1);
-
-                team.TeamPersons.ElementAt(0).Person = null;
-                team.TeamPersons.ElementAt(0).Team = null;
-
-                await _jbitDbContext.Teams.AddAsync(team);
-                await _jbitDbContext.SaveChangesAsync();
-
-                var t = await _jbitDbContext.Teams.ToListAsync();
-            }
-            catch(Exception ex)
-            {
-
-            }
-
             return View();
         }
 

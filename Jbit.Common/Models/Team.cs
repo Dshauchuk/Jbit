@@ -11,9 +11,11 @@ namespace Jbit.Common.Models
         public Guid Id { get; }
         public string Title { get; set; }
 
-        private List<TeamPerson> _teamPersons;
-        public IReadOnlyCollection<Person> Persons => _teamPersons?.Select(tp => tp.Person).ToList().AsReadOnly();
-        public IReadOnlyCollection<TeamPerson> TeamPersons => _teamPersons?.ToList().AsReadOnly();
+        private List<TeamPerson> _personLinks;
+        
+        public IReadOnlyCollection<TeamPerson> PersonLinks => _personLinks?.ToList().AsReadOnly();
+
+        public IReadOnlyCollection<Person> Members => _personLinks?.Select(l => l.Person).ToList().AsReadOnly();
 
         private Team()
         {
@@ -33,27 +35,37 @@ namespace Jbit.Common.Models
 
         public void AddMember(Person person)
         {
-            if(_teamPersons is null)
+            if (person is null)
             {
-                _teamPersons = new List<TeamPerson>();
+                throw new ArgumentNullException(nameof(person));
             }
 
-            _teamPersons.Add(new TeamPerson(this, person));
+            if (_personLinks is null)
+            {
+                _personLinks = new List<TeamPerson>();
+            }
+
+            _personLinks.Add(new TeamPerson(this, person));
         }
 
         public void RemoveMember(Person person)
         {
-            if(_teamPersons is null)
+            if (person is null)
+            {
+                throw new ArgumentNullException(nameof(person));
+            }
+
+            if (_personLinks is null)
             {
                 throw new InvalidOperationException("Cannot perform deletion - the team has no persons");
             }
 
-            _teamPersons.RemoveAll(tp => tp.PersonId == person.Id);
+            _personLinks.RemoveAll(tp => tp.PersonId == person.Id);
         }
 
         public double GetTeamRating(ITaskRatingCalculator ratingCalculator = null)
         {
-            return _teamPersons.Select(tp => tp.Person).Sum(p => p.GetPersonRating(ratingCalculator));
+            return _personLinks.Select(tp => tp.Person).Sum(p => p.GetPersonRating(ratingCalculator));
         }
     }
 }
