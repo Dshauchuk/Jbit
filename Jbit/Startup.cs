@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Jbit.Web.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +20,11 @@ namespace Jbit
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // db context registration
+            var dbContextBuilder = new DbContextOptionsBuilder<JbitDbContext>();
+            dbContextBuilder.UseNpgsql(Configuration.GetValue<string>("db:connectionString"));
+            services.AddTransient<JbitDbContext>(i => new JbitDbContext(dbContextBuilder.Options));
+
             services.AddControllersWithViews();
         }
 

@@ -4,7 +4,7 @@ using System;
 
 namespace Jbit.Common.Models
 {
-    public class Task : IIdentifiable
+    public class PersonTask : IIdentifiable
     {
         public Guid Id { get; }
         public string Title { get;  }
@@ -15,12 +15,12 @@ namespace Jbit.Common.Models
         public byte FatalErrors { get; }
 
         // for EF Core
-        private Task()
+        private PersonTask()
         {
 
         }
 
-        public Task(Guid id, string title, double hours, Guid assignedTo,
+        public PersonTask(Guid id, string title, double hours, Guid assignedTo,
             string link, byte corrections, byte fataErrors)
         {
             if(hours <= 0)

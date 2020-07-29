@@ -8,20 +8,19 @@ namespace Jbit.Common.Models
 {
     public class Team : IIdentifiable
     {
-        private int DefaultTeamCapacity = 100;
-
         public Guid Id { get; }
         public string Title { get; set; }
 
-        private List<Person> _persons;
-        public IReadOnlyCollection<Person> Persons => _persons?.ToList();
+        private List<TeamPerson> _teamPersons;
+        public IReadOnlyCollection<Person> Persons => _teamPersons?.Select(tp => tp.Person).ToList().AsReadOnly();
+        public IReadOnlyCollection<TeamPerson> TeamPersons => _teamPersons?.ToList().AsReadOnly();
 
         private Team()
         {
 
         }
 
-        public Team(Guid id, string title, ICollection<Person> persons)
+        public Team(Guid id, string title)
         {
             if (string.IsNullOrWhiteSpace(title))
             {
@@ -30,38 +29,31 @@ namespace Jbit.Common.Models
 
             Id = id;
             Title = title;
-
-            if(persons != null)
-            {
-                _persons = new List<Person>(persons);
-            }
         }
 
-        public void AddMember(Guid id, string firstName, string lastName,
-            Guid teamId, ICollection<Task> tasks, byte[] avatar = null)
+        public void AddMember(Person person)
         {
-            if(_persons is null)
+            if(_teamPersons is null)
             {
-                _persons = new List<Person>(DefaultTeamCapacity);
+                _teamPersons = new List<TeamPerson>();
             }
 
-            _persons.Add(new Person(id, firstName, lastName,
-                teamId, tasks, avatar));
+            _teamPersons.Add(new TeamPerson(this, person));
         }
 
         public void RemoveMember(Person person)
         {
-            if(_persons is null)
+            if(_teamPersons is null)
             {
                 throw new InvalidOperationException("Cannot perform deletion - the team has no persons");
             }
 
-            _persons.Remove(person);
+            _teamPersons.RemoveAll(tp => tp.PersonId == person.Id);
         }
 
         public double GetTeamRating(ITaskRatingCalculator ratingCalculator = null)
         {
-            return _persons.Sum(p => p.GetPersonRating(ratingCalculator));
+            return _teamPersons.Select(tp => tp.Person).Sum(p => p.GetPersonRating(ratingCalculator));
         }
     }
 }
