@@ -9,6 +9,6 @@
         /// Calculate task raiting
         /// </summary>
         /// <returns></returns>
-        double GetRating();
+        decimal GetRating();
     }
 }

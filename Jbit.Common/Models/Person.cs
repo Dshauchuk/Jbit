@@ -1,96 +1,55 @@
 ﻿using Jbit.Common.Models.Abstract;
 using Jbit.Common.Services;
+using Jbit.Common.Validation;
+using Jbit.Common.Validation.Abstract;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Jbit.Common.Models
 {
-    public class Person : IIdentifiable
+    public class Person : IIdentifiable, IValidatable
     {
         public Guid Id { get; }
         public string FirstName { get; }
         public string LastName { get; }
+        public string Email { get; set; }
         public byte[] Avatar { get; }
+        public ICollection<JbitTask> TaskLinks { get; set; }
 
-        private List<PersonTask> _tasks;
-        public IReadOnlyCollection<PersonTask> Tasks => _tasks?.ToList().AsReadOnly();
-
-        private List<TeamPerson> _teamLinks;
-
-        public IReadOnlyCollection<TeamPerson> TeamLinks => _teamLinks?.ToList().AsReadOnly();
-
-        public IReadOnlyCollection<Person> Teams => _teamLinks?.Select(l => l.Person).ToList().AsReadOnly();
-
-        private Person()
+        public Person()
         {
 
         }
 
-        public Person(Guid id, string firstName, string lastName, byte[] avatar = null)
+        public Person(Guid id, string firstName, string lastName, string email, ICollection<JbitTask> tasks)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
-            Avatar = avatar;
+            TaskLinks = tasks;
         }
 
-        public void AddTask(Guid id, string title, double hours, 
-            string link, byte corrections, byte fataErrors)
+        public decimal GetPersonRating(ITaskRatingCalculator ratingCalculator = null)
         {
-            if(_tasks is null)
-            {
-                _tasks = new List<PersonTask>();
-            }
-
-            _tasks.Add(
-                new PersonTask(id, title, hours, Id, link, corrections, fataErrors));
+            return TaskLinks?.Sum(t => t.GetTaskRaiting(ratingCalculator)) ?? 0;
         }
 
-        public void RemoveTask(PersonTask task)
+        public Result Validate()
         {
-            if(_tasks is null)
-            {
-                throw new InvalidOperationException("Person has no tasks");
-            }
+            List<ValidationResult> errors = new List<ValidationResult>();
 
-            _tasks.Remove(task);
+            if (string.IsNullOrWhiteSpace(FirstName))
+                errors.Add(new ValidationResult("First name is not specified"));
+
+            if (string.IsNullOrWhiteSpace(LastName))
+                errors.Add(new ValidationResult("Last name is not specified"));
+
+            if (string.IsNullOrWhiteSpace(Email))
+                errors.Add(new ValidationResult("Email is not specified"));
+
+            return new Result(errors);
         }
-
-        public void AddToTeam(Team team)
-        {
-            if(team is null)
-            {
-                throw new ArgumentNullException(nameof(team));
-            }
-
-            if(_teamLinks is null)
-            {
-                _teamLinks = new List<TeamPerson>();
-            }
-
-            _teamLinks.Add(new TeamPerson(team, this));
-        }
-
-        public void RemoveFromTeam(Team team)
-        {
-            if (team is null)
-            {
-                throw new ArgumentNullException(nameof(team));
-            }
-
-            if (_teamLinks is null)
-            {
-                throw new InvalidOperationException("Cannot perform deletion - the person is not assigned to any team");
-            }
-
-            _teamLinks.RemoveAll(tp => tp.TeamId == team.Id);
-        }
-
-        public double GetPersonRating(ITaskRatingCalculator ratingCalculator = null)
-        {
-            return _tasks?.Sum(t => t.GetTaskRaiting(ratingCalculator)) ?? 0;
-        }
-
     }
 }
