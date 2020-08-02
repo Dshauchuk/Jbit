@@ -12,19 +12,26 @@ namespace Jbit.Common.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public Guid OwnerId { get; set; }
+        public User Owner { get; set; }
         public ICollection<JbitTask> TaskLinks { get; set; }
+        public ICollection<CompetitionPerson> PersonLinks { get; set; }
 
         public Competition()
         {
 
         }
 
-        public Competition(Guid id, string name, string description, ICollection<JbitTask> taskLinks)
+        public Competition(Guid id, string name, string description, User owner,
+            ICollection<JbitTask> taskLinks, ICollection<CompetitionPerson> personLinks)
         {
             Id = id;
             Name = name;
             Description = description;
             TaskLinks = taskLinks;
+            PersonLinks = personLinks;
+            Owner = owner;
+            OwnerId = owner?.Id ?? Guid.Empty;
         }
 
         public Result Validate()

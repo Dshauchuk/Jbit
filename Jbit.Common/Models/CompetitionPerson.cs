@@ -16,20 +16,10 @@ namespace Jbit.Common.Models
 
         public CompetitionPerson(Competition competition, Person person)
         {
-            if (competition is null)
-            {
-                throw new ArgumentNullException(nameof(competition));
-            }
-
-            if (person is null)
-            {
-                throw new ArgumentNullException(nameof(person));
-            }
-
-            CompetitionId = competition.Id;
             Competition = competition;
-            PersonId = person.Id;
+            CompetitionId = competition?.Id ?? Guid.Empty;
             Person = person;
+            PersonId = person?.Id ?? Guid.Empty;
         }
     }
 }

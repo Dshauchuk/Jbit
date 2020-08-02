@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Jbit.Common.Models.Abstract;
+using System;
 
 namespace Jbit.Common.Models
 {
     public class Identity : IIdentifiable
     {
         public Guid Id { get; set; }
-        public Guid DeviceId { get; set; }
+        public string DeviceId { get; set; }
         public string Device { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }
@@ -18,7 +19,7 @@ namespace Jbit.Common.Models
 
         }
 
-        public Identity(Guid id, Guid deviceId, string device, User user, 
+        public Identity(Guid id, string deviceId, string device, User user, 
             string accessToken, string refreshToken)
         {
             Id = id;

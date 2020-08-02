@@ -17,6 +17,8 @@ namespace Jbit.Common.Models
         public Person Person { get; set; }
         public string Link { get; set; }
         public string Description { get; set; }
+        public Guid CompetitionId { get; set; }
+        public Competition Competition { get; set; }
         public ICollection<TaskValue> Values { get; set; }
 
         public JbitTask()
@@ -25,7 +27,7 @@ namespace Jbit.Common.Models
         }
 
         public JbitTask(Guid id, string title, string description, Person assignedTo,
-            string link, ICollection<TaskValue> values)
+            string link, Competition competition, ICollection<TaskValue> values)
         {
             Id = id;
             Title = title;
@@ -34,6 +36,8 @@ namespace Jbit.Common.Models
             Person = assignedTo;
             Link = link;
             Values = values;
+            Competition = competition;
+            CompetitionId = competition?.Id ?? Guid.Empty;
         }
 
         public decimal GetTaskRaiting(ITaskRatingCalculator ratingCalculator)

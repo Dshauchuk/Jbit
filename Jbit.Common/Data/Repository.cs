@@ -39,7 +39,7 @@ namespace Jbit.Common.Data
                 query = queryCallback(query);
             }
             
-            return query.FirstOrDefaultAsync(predicate);
+            return query.AsNoTracking().FirstOrDefaultAsync(predicate);
         }
 
         public Task<IQueryable<T>> QueryAsync(Expression<Func<T, bool>> predicate)

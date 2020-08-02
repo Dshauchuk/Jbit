@@ -7,9 +7,7 @@ namespace Jbit.Common.Models
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-
         public decimal Value { get; set; }
-
         public Guid TaskId { get; set; }
         public JbitTask Task { get; set; }
         

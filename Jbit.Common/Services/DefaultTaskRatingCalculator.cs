@@ -1,14 +1,10 @@
-﻿using System;
-
-namespace Jbit.Common.Services
+﻿namespace Jbit.Common.Services
 {
-    class DefaultTaskRatingCalculator : ITaskRatingCalculator
+    public class DefaultTaskRatingCalculator : ITaskRatingCalculator
     {
-
-
-        public double GetRating()
+        public decimal GetRating()
         {
-            return Hours * (1 / (Corrections * 0.3 + 1)) / FatalErrors + 1;
+            return 0;
         }
     }
 }
