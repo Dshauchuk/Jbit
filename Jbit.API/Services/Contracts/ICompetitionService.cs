@@ -2,7 +2,7 @@
 {
     public interface ICompetitionService
     {
-        public 
+         
 
 
     }

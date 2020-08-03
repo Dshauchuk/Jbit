@@ -1,4 +1,5 @@
 using Jbit.API.Data;
+using Jbit.Common.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,8 @@ namespace Jbit.API
             var dbContextBuilder = new DbContextOptionsBuilder<JbitDbContext>();
             dbContextBuilder.UseNpgsql(Configuration.GetValue<string>("db:connectionString"));
             services.AddTransient<JbitDbContext>(i => new JbitDbContext(dbContextBuilder.Options));
+
+            services.AddTransient<IRatingCalculator, RatingCalculator>();
 
             services.AddControllers();
         }

@@ -7,16 +7,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Jbit.Common.Models
 {
-    // TODO: Think about expressions!
-
-
     public class Competition : IIdentifiable, IValidatable
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public Guid OwnerId { get; set; }
-        public User Owner { get; set; }
+        public virtual User Owner { get; set; }
+        public Guid? ExpressionId { get; set; }
+        public virtual JbitExpression Expression { get; set; }
         public ICollection<JbitTask> TaskLinks { get; set; }
         public ICollection<CompetitionPerson> PersonLinks { get; set; }
 
@@ -25,7 +24,7 @@ namespace Jbit.Common.Models
 
         }
 
-        public Competition(Guid id, string name, string description, User owner,
+        public Competition(Guid id, string name, string description, User owner, JbitExpression expression,
             ICollection<JbitTask> taskLinks, ICollection<CompetitionPerson> personLinks)
         {
             Id = id;
@@ -35,6 +34,8 @@ namespace Jbit.Common.Models
             PersonLinks = personLinks;
             Owner = owner;
             OwnerId = owner?.Id ?? Guid.Empty;
+            Expression = expression;
+            JbitExpressionId = expression?.Id;
         }
 
         public Result Validate()

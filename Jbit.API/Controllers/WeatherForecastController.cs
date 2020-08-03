@@ -1,7 +1,6 @@
 ﻿using Jbit.API.Data;
-using Jbit.Common.Models;
+using Jbit.Common.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,6 +14,7 @@ namespace Jbit.API.Controllers
     public class WeatherForecastController : ControllerBase
     {
         private readonly JbitDbContext _dbContext;
+        private readonly IRatingCalculator _ratingCalculator;
 
         private static readonly string[] Summaries = new[]
         {
@@ -23,8 +23,9 @@ namespace Jbit.API.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, JbitDbContext dbContext)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, JbitDbContext dbContext, IRatingCalculator ratingCalculator)
         {
+            _ratingCalculator = ratingCalculator;
             _logger = logger;
             _dbContext = dbContext;
         }
