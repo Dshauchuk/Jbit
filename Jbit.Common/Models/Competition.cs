@@ -7,6 +7,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Jbit.Common.Models
 {
+    // TODO: Think about expressions!
+
+
     public class Competition : IIdentifiable, IValidatable
     {
         public Guid Id { get; set; }

@@ -17,7 +17,7 @@ namespace Jbit.API.Data.Mapping
             builder.Property(e => e.LastName).IsRequired().HasColumnName("last_name");
             builder.Property(e => e.Email).IsRequired().HasColumnName("email");
             builder.Property(e => e.PasswordHash).IsRequired().HasColumnName("password_hash");
-            builder.Property(e => e.RegistrationTamistamp).IsRequired().HasColumnName("registration_timestamp");
+            builder.Property(e => e.RegistrationTimestamp).IsRequired().HasColumnName("registration_timestamp");
 
             builder.HasMany(t => t.UserLogins).WithOne(i => i.User).HasForeignKey(i => i.UserId);
             builder.HasOne(b => b.UserPerson).WithOne(p => p.User).HasForeignKey<Person>(b => b.UserId);
