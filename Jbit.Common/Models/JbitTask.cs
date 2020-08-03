@@ -11,16 +11,6 @@ namespace Jbit.Common.Models
 {
     public class JbitTask : IIdentifiable, IValidatable
     {
-        public Guid Id { get; set; }
-        public string Title { get; set; }
-        public Guid AssignedTo { get; set; }
-        public Person Person { get; set; }
-        public string Link { get; set; }
-        public string Description { get; set; }
-        public Guid CompetitionId { get; set; }
-        public Competition Competition { get; set; }
-        public ICollection<TaskValue> Values { get; set; }
-
         public JbitTask()
         {
 
@@ -39,6 +29,16 @@ namespace Jbit.Common.Models
             Competition = competition;
             CompetitionId = competition?.Id ?? Guid.Empty;
         }
+
+        public Guid Id { get; set; }
+        public string Title { get; set; }
+        public Guid AssignedTo { get; set; }
+        public Person Person { get; set; }
+        public string Link { get; set; }
+        public string Description { get; set; }
+        public Guid CompetitionId { get; set; }
+        public Competition Competition { get; set; }
+        public ICollection<TaskValue> Values { get; set; }
 
         public decimal GetTaskRaiting(ITaskRatingCalculator ratingCalculator)
         {

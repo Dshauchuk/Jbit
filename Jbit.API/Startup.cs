@@ -26,6 +26,7 @@ namespace Jbit.API
             dbContextBuilder.UseNpgsql(Configuration.GetValue<string>("db:connectionString"));
             services.AddTransient<JbitDbContext>(i => new JbitDbContext(dbContextBuilder.Options));
 
+            services.AddHttpContextAccessor();
             services.AddTransient<IRatingCalculator, RatingCalculator>();
 
             services.AddControllers();

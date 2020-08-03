@@ -1,24 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Jbit.API.Models.ViewModels
 {
-    public class CreateCompetitionViewModel
+    public class ExtendedCompetitionViewModel
     {
-        public CreateCompetitionViewModel()
+        public ExtendedCompetitionViewModel()
         {
 
         }
 
-        public CreateCompetitionViewModel(string name, string description)
+        public ExtendedCompetitionViewModel(Guid id, string name,
+            string description, IEnumerable<PersonViewModel> persons)
         {
+            Id = id;
             Name = name;
             Description = description;
+            Persons = persons;
         }
 
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public Guid? ExpressionId { get; set; }
         public string ExpresionName { get; set; }
         public string ExpressionDescription { get; set; }
+        public IEnumerable<PersonViewModel> Persons { get; set; }
     }
 }
