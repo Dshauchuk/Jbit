@@ -9,7 +9,7 @@
 
         public EmailValidationResponse(bool isEmailUnique)
         {
-            IsEmailUnique = IsEmailUnique;
+            IsEmailUnique = isEmailUnique;
         }
 
         public bool IsEmailUnique { get; set; }

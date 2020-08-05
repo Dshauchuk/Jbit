@@ -10,7 +10,7 @@ namespace Jbit.API.Models.ViewModels
         }
 
         public JwtResponse(Guid userId, string accessToken,
-            string refreshToken, int expiresIn)
+            string refreshToken, double expiresIn)
         {
             UserId = userId;
             AccessToken = accessToken;
@@ -21,6 +21,6 @@ namespace Jbit.API.Models.ViewModels
         public Guid UserId { get; set; }
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
-        public int ExpiresIn { get; set; }
+        public double ExpiresIn { get; set; }
     }
 }

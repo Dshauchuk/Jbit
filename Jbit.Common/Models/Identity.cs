@@ -26,7 +26,6 @@ namespace Jbit.Common.Models
             DeviceId = deviceId;
             Device = device;
             UserId = user?.Id ?? Guid.Empty;
-            User = user;
             AccessToken = accessToken;
             RefreshToken = refreshToken;
         }

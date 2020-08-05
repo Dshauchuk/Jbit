@@ -35,7 +35,7 @@ namespace Jbit.Common.Models
             Owner = owner;
             OwnerId = owner?.Id ?? Guid.Empty;
             Expression = expression;
-            JbitExpressionId = expression?.Id;
+            ExpressionId = expression?.Id;
         }
 
         public Result Validate()

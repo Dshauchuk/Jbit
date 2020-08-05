@@ -1,5 +1,4 @@
-﻿using Jbit.API.Data;
-using Jbit.Common.Services;
+﻿using Jbit.API.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,8 +12,7 @@ namespace Jbit.API.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private readonly JbitDbContext _dbContext;
-        private readonly IRatingCalculator _ratingCalculator;
+        private readonly IAuthService _authService;
 
         private static readonly string[] Summaries = new[]
         {
@@ -23,11 +21,10 @@ namespace Jbit.API.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, JbitDbContext dbContext, IRatingCalculator ratingCalculator)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IAuthService authService)
         {
-            _ratingCalculator = ratingCalculator;
             _logger = logger;
-            _dbContext = dbContext;
+            _authService = authService;
         }
 
         [HttpGet]
