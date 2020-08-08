@@ -1,4 +1,4 @@
-﻿using Jbit.API.Models.ViewModels;
+﻿using Jbit.API.Models;
 using Jbit.API.Services.Contracts;
 using Jbit.Common.Auth.Interfaces;
 using Jbit.Common.Data;
@@ -34,7 +34,7 @@ namespace Jbit.API.Services
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<JwtResponse> AuthAsync(LoginViewModel loginModel)
+        public async Task<JwtResponse> AuthAsync(LoginModel loginModel)
         {
             if (loginModel is null)
                 throw new ArgumentNullException(nameof(loginModel));
@@ -90,7 +90,7 @@ namespace Jbit.API.Services
             await _identityRepository.SaveChangesAsync();
         }
 
-        public async Task<UserViewModel> RegisterAsync(RegistrationViewModel registrationModel)
+        public async Task<User> RegisterAsync(RegistrationModel registrationModel)
         {
             if (registrationModel is null)
                 throw new ArgumentNullException(nameof(registrationModel));
@@ -101,7 +101,7 @@ namespace Jbit.API.Services
                 throw new ArgumentException(string.Join(";", vResult.Errors.Select(e => e.ErrorMessage)));
             }
 
-            if (!(await VeryfyEmailUniquenessAsync(registrationModel.Email)).IsEmailUnique)
+            if (!(await VeryfyEmailUniquenessAsync(registrationModel.Email)))
                 throw new JbitException("User with such email already exists", "email_is_busy");
 
             // try to find a person with such email
@@ -117,14 +117,14 @@ namespace Jbit.API.Services
             await _userRepository.AddAsync(user);
             await _userRepository.SaveChangesAsync();
 
-            return new UserViewModel(user.Id, user.FirstName, user.LastName, user.Email, user.RegistrationTimestamp, null);
+            return user;
         }
 
-        public async Task<EmailValidationResponse> VeryfyEmailUniquenessAsync(string email)
+        public async Task<bool> VeryfyEmailUniquenessAsync(string email)
         {
             var user = await _userRepository.FirstOrDefaultAsync(u => u.Email.Equals(email));
 
-            return new EmailValidationResponse(user is null);
+            return user is null;
         }
     }
 }

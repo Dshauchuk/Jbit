@@ -5,20 +5,6 @@ namespace Jbit.API.Models.ViewModels
 {
     public class ExtendedCompetitionViewModel
     {
-        public ExtendedCompetitionViewModel()
-        {
-
-        }
-
-        public ExtendedCompetitionViewModel(Guid id, string name,
-            string description, IEnumerable<PersonViewModel> persons)
-        {
-            Id = id;
-            Name = name;
-            Description = description;
-            Persons = persons;
-        }
-
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

@@ -20,6 +20,7 @@ namespace Jbit.API.Data
         public virtual DbSet<CompetitionPerson> CompetitionPersons { get; set; }
         public virtual DbSet<Identity> Identities { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<JbitExpression> Expressions { get; set; }
 
         public static readonly ILoggerFactory MyLoggerFactory
             = LoggerFactory.Create(builder => { builder.AddConsole(); });
@@ -34,6 +35,7 @@ namespace Jbit.API.Data
             modelBuilder
                 .ApplyConfiguration(new TaskValueMapping())
                 .ApplyConfiguration(new JbitTaskMapping())
+                .ApplyConfiguration(new JbitExpressionMapping())
                 .ApplyConfiguration(new PersonMapping())
                 .ApplyConfiguration(new CompetitionMapping())
                 .ApplyConfiguration(new CompetitionPersonMapping())

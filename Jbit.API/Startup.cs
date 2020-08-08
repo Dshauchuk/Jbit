@@ -1,10 +1,9 @@
+using AutoMapper;
 using Jbit.API.Data;
 using Jbit.API.Services;
 using Jbit.API.Services.Contracts;
 using Jbit.Common.Auth;
 using Jbit.Common.Auth.Extensions;
-using Jbit.Common.Auth.Interfaces;
-using Jbit.Common.Auth.Services;
 using Jbit.Common.Data;
 using Jbit.Common.Models;
 using Jbit.Common.Services;
@@ -32,6 +31,8 @@ namespace Jbit.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(Startup));
+
             // db context registration
             var dbContextBuilder = new DbContextOptionsBuilder<JbitDbContext>();
             dbContextBuilder.UseNpgsql(Configuration.GetValue<string>("db:connectionString"));
@@ -48,8 +49,12 @@ namespace Jbit.API
             services.AddTransient<IRepository<User>, Repository<User>>();
             services.AddTransient<IRepository<Person>, Repository<Person>>();
             services.AddTransient<IRepository<Identity>, Repository<Identity>>();
+            services.AddTransient<IRepository<JbitExpression>, Repository<JbitExpression>>();
+            services.AddTransient<IRepository<JbitTask>, Repository<JbitTask>>();
+            services.AddTransient<IRepository<Competition>, Repository<Competition>>();
             services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<ICompetitionService, CompetitionService>();
 
             services.AddControllers();
         }

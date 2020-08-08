@@ -18,7 +18,7 @@ namespace Jbit.API.Data.Mapping
             builder.Property(e => e.Email).HasColumnName("email");
             builder.Property(e => e.Avatar).HasColumnName("avatar");
             builder.Property(e => e.OwnerId).IsRequired().HasColumnName("owner_id");
-            builder.Property(e => e.UserId).HasColumnName("user_id");
+            //builder.Property(e => e.UserId).HasColumnName("user_id");
             builder.Property(e => e.Points).IsRequired().HasColumnName("points");
             
             builder.HasMany(b => b.TaskLinks).WithOne(t => t.Person).HasForeignKey(t => t.AssignedTo);

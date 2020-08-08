@@ -18,8 +18,6 @@ namespace Jbit.Common.Models
         public byte[] Avatar { get; set; }
         public Guid OwnerId { get; set; }
         public virtual User Owner { get; set; }
-        public Guid? UserId { get; set; }
-        public virtual User User { get; set; }
         public decimal Points { get; set; }
         public virtual ICollection<JbitTask> TaskLinks { get; set; }
         public virtual ICollection<CompetitionPerson> CompetitionLinks { get; set; }
@@ -30,7 +28,7 @@ namespace Jbit.Common.Models
         }
 
         public Person(Guid id, string firstName, string lastName, string email, decimal points,
-            User owner, User user, ICollection<JbitTask> tasks, ICollection<CompetitionPerson> competitionLinks)
+            User owner, ICollection<JbitTask> tasks, ICollection<CompetitionPerson> competitionLinks)
         {
             Id = id;
             FirstName = firstName;
@@ -41,9 +39,6 @@ namespace Jbit.Common.Models
 
             Owner = owner;
             OwnerId = owner?.Id ?? Guid.Empty;
-
-            User = user;
-            UserId = user?.Id;
 
             CompetitionLinks = competitionLinks;
         }

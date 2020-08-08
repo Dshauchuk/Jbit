@@ -12,7 +12,6 @@ namespace Jbit.Common.Models
         public string Email { get; set; }
         public string PasswordHash { get; set; }
         public DateTime? RegistrationTimestamp { get; set; }
-        public virtual Person UserPerson { get; set; }
         public ICollection<Person> CreatedPersons { get; set; }
         public ICollection<Identity> UserLogins { get; set; }
         public ICollection<Competition> Competitions { get; set; }

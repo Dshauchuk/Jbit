@@ -12,7 +12,7 @@ namespace Jbit.Common.Data
 
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>> queryCallback = null);
 
-        Task<IQueryable<T>> QueryAsync(Expression<Func<T, bool>> predicate);
+        IQueryable<T> Query(Expression<Func<T, bool>> predicate);
 
         Task<T> UpdateAsync(T item);
 

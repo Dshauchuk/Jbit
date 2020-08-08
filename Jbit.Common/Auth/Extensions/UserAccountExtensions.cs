@@ -17,6 +17,7 @@ namespace Jbit.Common.Auth.Extensions
             var defaultClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Email),
+                new Claim("userid", user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, $"{user.FirstName} {user.LastName}"),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.TimeOfDay.Ticks.ToString(),

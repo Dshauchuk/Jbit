@@ -42,7 +42,7 @@ namespace Jbit.Common.Data
             return query.AsNoTracking().FirstOrDefaultAsync(predicate);
         }
 
-        public Task<IQueryable<T>> QueryAsync(Expression<Func<T, bool>> predicate)
+        public IQueryable<T> Query(Expression<Func<T, bool>> predicate)
         {
             IQueryable<T> query = _dbContext.Set<T>();
 
@@ -51,7 +51,7 @@ namespace Jbit.Common.Data
                 query = query.Where(predicate);
             }
 
-            return Task.FromResult(query.AsNoTracking());
+            return query.AsNoTracking();
         }
 
         public Task<T> UpdateAsync(T item)

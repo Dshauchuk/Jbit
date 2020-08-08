@@ -16,7 +16,9 @@ namespace Jbit.API.Data.Mapping
             builder.Property(e => e.Name).IsRequired().HasColumnName("title");
             builder.Property(e => e.Description).HasColumnName("description");
             builder.Property(e => e.OwnerId).IsRequired().HasColumnName("owner_id");
+            builder.Property(e => e.ExpressionId).IsRequired().HasColumnName("expression_id");
 
+            builder.HasOne(e => e.Expression).WithMany(e => e.Competitions).HasForeignKey(e => e.ExpressionId);
             builder.HasOne(b => b.Owner).WithMany(t => t.Competitions).HasForeignKey(c => c.OwnerId);
             builder.HasMany(b => b.TaskLinks).WithOne(t => t.Competition).HasForeignKey(t => t.CompetitionId);
             builder.HasMany(b => b.PersonLinks).WithOne(t => t.Competition).HasForeignKey(t => t.CompetitionId);

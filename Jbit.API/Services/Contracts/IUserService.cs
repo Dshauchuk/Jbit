@@ -1,4 +1,4 @@
-﻿using Jbit.API.Models.ViewModels;
+﻿using Jbit.Common.Models;
 using System;
 using System.Threading.Tasks;
 
@@ -6,6 +6,6 @@ namespace Jbit.API.Services.Contracts
 {
     public interface IUserService
     {
-        Task<UserViewModel> GetUserAsync(Guid id);
+        Task<User> GetUserAsync(Guid id);
     }
 }

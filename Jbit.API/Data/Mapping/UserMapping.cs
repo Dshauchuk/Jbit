@@ -20,7 +20,6 @@ namespace Jbit.API.Data.Mapping
             builder.Property(e => e.RegistrationTimestamp).IsRequired().HasColumnName("registration_timestamp");
 
             builder.HasMany(t => t.UserLogins).WithOne(i => i.User).HasForeignKey(i => i.UserId);
-            builder.HasOne(b => b.UserPerson).WithOne(p => p.User).HasForeignKey<Person>(b => b.UserId);
             builder.HasMany(b => b.CreatedPersons).WithOne(p => p.Owner).HasForeignKey(p => p.OwnerId);
         }
     }

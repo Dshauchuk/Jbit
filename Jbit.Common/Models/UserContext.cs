@@ -1,16 +1,16 @@
 ﻿using System;
 
-namespace Jbit.API.Models
+namespace Jbit.Common.Models
 {
     public class UserContext
     {
         public UserContext(Guid id, string email)
         {
-            Id = id;
+            UserId = id;
             Email = email;
         }
 
-        public Guid Id { get; }
+        public Guid UserId { get; }
         public string Email { get; }
     }
 }

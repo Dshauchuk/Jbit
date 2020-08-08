@@ -3,9 +3,9 @@ using Jbit.Common.Validation.Abstract;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Jbit.API.Models.ViewModels
+namespace Jbit.API.Models
 {
-    public class RegistrationViewModel : IValidatable
+    public class RegistrationModel : IValidatable
     {
         public string Email { get; set; } 
         public string FirstName { get; set; }

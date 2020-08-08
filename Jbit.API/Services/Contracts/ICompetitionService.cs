@@ -1,4 +1,6 @@
-﻿using Jbit.API.Models.ViewModels;
+﻿using Jbit.API.Models;
+using Jbit.API.Models.ViewModels;
+using Jbit.Common.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,16 +9,12 @@ namespace Jbit.API.Services.Contracts
 {
     public interface ICompetitionService
     {
-        Task<CompetitionViewModel> AddCompetitionAsync(CreateCompetitionViewModel createCompModel);
-
-        Task<List<CompetitionViewModel>> GetUserCompetitionsAsync(Guid userId);
-
-        Task<ExtendedCompetitionViewModel> GetFullCompetitionDataAsync(Guid competitionId);
-
-        Task<PersonViewModel> AddPersonAsync(CreatePersonViewModel createPersonModel);
-
-        Task<PersonViewModel> AddExistentPersonIdAsync(Guid personId, Guid competitionId);
-
-        Task<TaskViewModel> AddTaskAsync(CreateTaskViewModel createTaskModel);
+        Task<Competition> AddCompetitionAsync(CreateCompetitionModel createCompModel, UserContext userContext);
+        Task<Person> AddExistentPersonIdAsync(Guid personId, Guid competitionId, UserContext userContext);
+        Task<Person> AddPersonAsync(CreatePersonModel createPersonModel, UserContext userContext);
+        Task<JbitTask> AddTaskAsync(CreateTaskModel createTaskModel, UserContext userContext);
+        Task<Competition> GetCompetitionAsync(Guid competitionId);
+        Task<Competition> GetFullCompetitionDataAsync(Guid competitionId);
+        Task<List<Competition>> GetUserCompetitionsAsync(Guid userId);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Jbit.API.Models.ViewModels
+namespace Jbit.API.Models
 {
     public class JwtResponse
     {

@@ -14,6 +14,6 @@ namespace Jbit.API.Models.ViewModels
         public string Description { get; set; }
         public Guid CompetitionId { get; set; }
         public string CompetitionName { get; set; }
-        public ICollection<TaskValueViewModel> Values { get; set; }
+        public ICollection<TaskValueModel> Values { get; set; }
     }
 }

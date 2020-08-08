@@ -1,13 +1,13 @@
 ﻿namespace Jbit.API.Models.ViewModels
 {
-    public class TaskValueViewModel
+    public class TaskValueModel
     {
-        public TaskValueViewModel()
+        public TaskValueModel()
         {
 
         }
 
-        public TaskValueViewModel(string name, decimal value)
+        public TaskValueModel(string name, decimal value)
         {
             Name = name;
             Value = value;
