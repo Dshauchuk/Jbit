@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Jbit.API.Models;
 using Jbit.API.Models.ViewModels;
 using Jbit.API.Services.Contracts;
 using Jbit.Common.Exceptions;
@@ -27,38 +28,55 @@ namespace Jbit.API.Controllers
         }
 
         [HttpPost]
-        public async Task<CompetitionViewModel> CreateCompetitionAsync(CreateCompetitionModel createModel)
+        public async Task<IActionResult> CreateCompetitionAsync(CreateCompetitionModel createModel)
         {
             var added = await _competitionService.AddCompetitionAsync(createModel, UserContext);
 
-            return mapper.Map<CompetitionViewModel>(added);
+            return Created(string.Empty, mapper.Map<CompetitionViewModel>(added));
         }
 
         [HttpGet("{id:Guid}")]
-        public async Task<ExtendedCompetitionViewModel> GetCompetitionByIdAsync(Guid id)
+        public async Task<IActionResult> GetCompetitionByIdAsync(Guid id)
         {
-            var competition = await _competitionService.GetCompetitionAsync(id);
+            var competition = await _competitionService.GetFullCompetitionDataAsync(id);
 
             if (competition is null)
                 throw new NotFoundException($"Competition with id '{id}' not found");
 
-            return mapper.Map<ExtendedCompetitionViewModel>(competition);
+            return Ok(mapper.Map<ExtendedCompetitionViewModel>(competition));
         }
 
-        [HttpGet()]
-        public async Task<IEnumerable<CompetitionViewModel>> GetUserCompetitionsAsync([FromQuery]Guid userId)
+        [HttpGet]
+        public async Task<IActionResult> GetUserCompetitionsAsync([FromQuery]Guid userId)
         {
             var userCompetitions = await _competitionService.GetUserCompetitionsAsync(userId);
 
-            return mapper.Map<IEnumerable<CompetitionViewModel>>(userCompetitions);
+            return Ok(mapper.Map<IEnumerable<CompetitionViewModel>>(userCompetitions));
         }
 
-
-        public async Task<IActionResult> Test()
+        [HttpPost("{competitionId:Guid}/persons")]
+        public async Task<IActionResult> CreatePersonAsync([FromRoute]Guid competitionId, [FromBody]CreatePersonModel personModel)
         {
+            if (personModel != null)
+                personModel.CompetitionId = competitionId;
 
+            var addedPerson = await _competitionService.AddPersonAsync(personModel, UserContext);
 
-            return Ok();
+            return Created(string.Empty, mapper.Map<PersonViewModel>(addedPerson));
+        }
+
+        [HttpPost("{competitionId:Guid}/persons/{personId}")]
+        public async Task<IActionResult> CreateTaskAsync([FromRoute] Guid competitionId, [FromRoute] Guid personId, [FromBody] CreateTaskModel taskModel)
+        {
+            if(taskModel != null)
+            {
+                taskModel.CompetitionId = competitionId;
+                taskModel.AssignedTo = personId;
+            }
+
+            var addedTask = await _competitionService.AddTaskAsync(taskModel, UserContext);
+
+            return Ok(mapper.Map<TaskViewModel>(addedTask));
         }
     }
 }

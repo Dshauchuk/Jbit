@@ -21,12 +21,12 @@ namespace Jbit.API.Controllers
         }
 
         [HttpPost("api/sign-up")]
-        public async Task<UserViewModel> RegisterUserAsync([FromBody] RegistrationModel model)
-            => mapper.Map<UserViewModel>(await _authService.RegisterAsync(model));
+        public async Task<IActionResult> RegisterUserAsync([FromBody] RegistrationModel model)
+            => Ok(mapper.Map<UserViewModel>(await _authService.RegisterAsync(model)));
 
         [HttpPost("api/sign-in")]
-        public Task<JwtResponse> LoginAsync([FromBody] LoginModel model)
-            => _authService.AuthAsync(model);
+        public async Task<IActionResult> LoginAsync([FromBody] LoginModel model)
+            => Ok(await _authService.AuthAsync(model));
 
     }
 }

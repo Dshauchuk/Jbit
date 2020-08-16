@@ -12,9 +12,7 @@ namespace Jbit.API.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public byte[] Avatar { get; set; }
-        public Guid OwnerId { get; set; }
-        public Guid? UserId { get; set; }
-        public Guid[] Competitions { get; set; }
+        public Guid? CompetitionId { get; set; }
 
         public Result Validate()
         {

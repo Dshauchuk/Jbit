@@ -6,7 +6,6 @@ using Jbit.Common.Exceptions;
 using Jbit.Common.Models;
 using Jbit.Common.Validation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -102,18 +101,17 @@ namespace Jbit.API.Services
             {
                 FirstName = createPersonModel.FirstName,
                 LastName = createPersonModel.LastName,
-                OwnerId = createPersonModel.OwnerId
+                OwnerId = userContext.UserId
             };
 
-            if (createPersonModel.Competitions.Any())
+            if (createPersonModel.CompetitionId != null)
             {
-                var competitions = await _competitionRepository.Query(c => createPersonModel.Competitions.Any(i => i == c.Id)).ToListAsync();
-                var nonExistent = createPersonModel.Competitions.Except(competitions.Select(c => c.Id));
+                var competition = await _competitionRepository.FirstOrDefaultAsync(c => c.Id == createPersonModel.CompetitionId);
 
-                if (nonExistent.Any())
-                    throw new JbitException($"Competition(s) with id(s) {string.Join(",", nonExistent)} do(es) not exist.");
+                if (competition is null)
+                    throw new JbitException($"Competition with id '{createPersonModel.CompetitionId}' does not exist.");
 
-                person.CompetitionLinks = competitions.Select(c => new CompetitionPerson { CompetitionId = c.Id, Person = person }).ToList();
+                person.CompetitionLinks = new List<CompetitionPerson> { new CompetitionPerson { CompetitionId = createPersonModel.CompetitionId.Value, Person = person } };
             }
 
             var added = await _personRepository.AddAsync(person);
@@ -151,12 +149,14 @@ namespace Jbit.API.Services
                 AssignedTo = createTaskModel.AssignedTo,
                 Link = createTaskModel.Link,
                 Description = createTaskModel.Description,
-                CompetitionId = createTaskModel.CompetitionId,
+                CompetitionId = competition.Id,
                 Values = createTaskModel.Values?.Select(v => new TaskValue { Name = v.Name, Value = v.Value }).ToList()
             };
 
             var added = await _taskRepository.AddAsync(task);
             await _taskRepository.SaveChangesAsync();
+
+            added.Competition = competition;
 
             return added;
         }
@@ -177,7 +177,7 @@ namespace Jbit.API.Services
                     c =>
                         c.Include(a => a.PersonLinks)
                             .ThenInclude(a => a.Person)
-                         .Include(a => a.TaskLinks)
+                                .ThenInclude(p => p.TaskLinks)
                          .Include(a => a.Expression));
 
         public Task<List<Competition>> GetUserCompetitionsAsync(Guid userId)

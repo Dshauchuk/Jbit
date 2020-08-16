@@ -17,7 +17,7 @@ namespace Jbit.API.AutoMapper
                 .ForMember(dest => dest.Link, opt => opt.MapFrom(src => src.Link))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.CompetitionId, opt => opt.MapFrom(src => src.CompetitionId))
-                .ForMember(dest => dest.CompetitionId, opt => opt.MapFrom(src => src.Competition.Name))
+                .ForMember(dest => dest.CompetitionName, opt => opt.MapFrom(src => src.Competition.Name))
                 .ForMember(dest => dest.Values, opt => opt.MapFrom(src => src.Values));
         }
     }
